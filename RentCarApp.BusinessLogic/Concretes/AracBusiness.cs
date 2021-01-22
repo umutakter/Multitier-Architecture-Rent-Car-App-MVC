@@ -15,14 +15,14 @@ namespace RentCarApp.BusinessLogic
     ///        Bu sınıf verilerimizi bilgiye dönüştürür ve onları müşterinin istediği iş kurallarıyla harmanlayıp Customer işlemlerini dış dünyaya açtığımız yerdir. 
     ///     </turkish>
     /// </summary>
-    public class SirketBusiness : IDisposable
+    public class AracBusiness : IDisposable
     {
-        public bool InsertSirket(Sirket entity)
+        public bool InsertArac(Arac entity)
         {
             try
             {
                 bool isSuccess;
-                using (var repo = new SirketRepository())
+                using (var repo = new AracRepository())
                 {
                     isSuccess = repo.Insert(entity);
                 }
@@ -31,16 +31,16 @@ namespace RentCarApp.BusinessLogic
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:SirketBusiness::InsertSirket::Error occured.", ex);
+                throw new Exception("BusinessLogic:AracBusiness::InsertArac::Error occured.", ex);
             }
         }
 
-        public bool UpdateCustomer(Sirket entity)
+        public bool UpdateArac(Arac entity)
         {
             try
             {
                 bool isSuccess;
-                using (var repo = new SirketRepository())
+                using (var repo = new AracRepository())
                 {
                     isSuccess = repo.Update(entity);
                 }
@@ -49,16 +49,16 @@ namespace RentCarApp.BusinessLogic
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:SirketBusiness::UpdateSirket::Error occured.", ex);
+                throw new Exception("BusinessLogic:AracBusiness::UpdateArac::Error occured.", ex);
             }
         }
 
-        public bool DeleteCustomerById(int ID)
+        public bool DeleteAracById(int ID)
         {
             try
             {
                 bool isSuccess;
-                using (var repo = new SirketRepository())
+                using (var repo = new AracRepository())
                 {
                     isSuccess = repo.DeletedById(ID);
                 }
@@ -67,16 +67,16 @@ namespace RentCarApp.BusinessLogic
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:SirketBusiness::SirketCustomer::Error occured.", ex);
+                throw new Exception("BusinessLogic:AracBusiness::AracCustomer::Error occured.", ex);
             }
         }
 
-        public Sirket SelectCustomerById(int Id)
+        public Arac SelectAracById(int Id)
         {
             try
             {
-                Sirket responseEntitiy;
-                using (var repo = new SirketRepository())
+                Arac responseEntitiy;
+                using (var repo = new AracRepository())
                 {
                     responseEntitiy = repo.SelectedById(Id);
                     if (responseEntitiy == null)
@@ -87,37 +87,17 @@ namespace RentCarApp.BusinessLogic
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:SirketBusiness::SelectSirketById::Error occured.", ex);
+                throw new Exception("BusinessLogic:AracBusiness::SelectAracById::Error occured.", ex);
             }
         }
 
-        public Sirket SirketLogin(string sirketKullaniciAdi, string sirketSifre)
+        public List<Arac> SelectAllArac()
         {
-            try
-            {
-                Sirket sirket = null;
-                using (var repo = new SirketRepository())
-                {
-                    sirket = repo.Login(sirketKullaniciAdi, sirketSifre);
-                    if (sirket == null)
-                        throw new NullReferenceException("Sirket doesnt exists!");
-                }
-                return sirket;
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:SirketBusiness::SirketLogin::Error occured.", ex);
-            }
-        }
-
-        public List<Sirket> SelectAllCustomers()
-        {
-            var responseEntities = new List<Sirket>();
+            var responseEntities = new List<Arac>();
 
             try
             {
-                using (var repo = new SirketRepository())
+                using (var repo = new AracRepository())
                 {
                     foreach (var entity in repo.SelectAll())
                     {
@@ -129,11 +109,33 @@ namespace RentCarApp.BusinessLogic
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:SirketBusiness::SelectAllCSirket::Error occured.", ex);
+                throw new Exception("BusinessLogic:AracBusiness::SelectAllCArac::Error occured.", ex);
             }
         }
 
-        public SirketBusiness()
+        public List<Arac> SelectAllSirketArac(int SirketId)
+        {
+            var responseEntities = new List<Arac>();
+
+            try
+            {
+                using (var repo = new AracRepository())
+                {
+                    foreach (var entity in repo.SelectAllSirketCar(SirketId))
+                    {
+                        responseEntities.Add(entity);
+                    }
+                }
+                return responseEntities;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:AracBusiness::SelectAllCArac::Error occured.", ex);
+            }
+        }
+
+        public AracBusiness()
         {
             //Auto-generated Code   
         }

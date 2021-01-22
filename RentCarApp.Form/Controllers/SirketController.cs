@@ -20,30 +20,33 @@ namespace RentCarApp.Form.Controllers
         {
             try
             {
-                bool success;
+                Sirket sirket = null;
                 using (var sirketBusiness = new SirketBusiness())
                 {
-                    success = sirketBusiness.SirketLogin(model.SirketKullaniciAdi, model.SirketSifre);
+                    sirket = sirketBusiness.SirketLogin(model.SirketKullaniciAdi, model.SirketSifre);
                 }
-                if (success == true)
+                if (sirket != null)
                 {
-                    return View("SirketSayfasi");
+                    Session.Add("Sirket", sirket);
                 }
-                else
+                List<Arac> arac = null;
+                using (var aracBusiness = new AracBusiness())
                 {
-                    return View("SirketGiris");
+                    arac = aracBusiness.SelectAllSirketArac(sirket.Id);
+                    Session.Add("Arac", arac);
                 }
+                return View("SirketSayfasi");
             }
             catch (Exception)
             {
                 return View("SirketGiris");
             }
-
         }
         public ActionResult SirketKayit()
         {
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -75,6 +78,46 @@ namespace RentCarApp.Form.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult SirketSayfasi(Arac model)
+        {
+            try
+            {
+                bool success;
+                using (var aracBusiness = new AracBusiness())
+                {
+                    success = aracBusiness.InsertArac(new Arac()
+                    {
+                        AracAdi = model.AracAdi,
+                        AracModeli = model.AracModeli,
+                        EhliyetYasi = model.EhliyetYasi,
+                        MinYasSiniri = model.MinYasSiniri,
+                        GunlukKmSiniri = model.GunlukKmSiniri,
+                        AnlikKm = model.AnlikKm,
+                        AirBag = model.AirBag,
+                        BagajHacmi = model.BagajHacmi,
+                        KoltukSayisi = model.KoltukSayisi,
+                        GunlukFiyat = model.GunlukFiyat,
+                        SirketId = model.SirketId,
+                        MusaitlikDurumu = model.MusaitlikDurumu,
+                    });
+                }
+                var message = success ? "done" : "failed";
+
+                Console.WriteLine("Operation " + message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error happened: " + ex.Message);
+            }
+            return View(model);
+        }
+
+
+
+
     }
     
 }

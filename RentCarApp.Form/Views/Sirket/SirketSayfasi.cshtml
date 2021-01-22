@@ -1,270 +1,280 @@
-﻿<!DOCTYPE html>
+﻿@using RentCarApp.Models.Concretes
+@{ ViewBag.Title = "Sirket Sayfasi";
+    Sirket sirket = (Sirket)Session["Sirket"];
+    List<Arac> arac = (List<Arac>)Session["Arac"]; 
+ }
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/CSS/font-awesome.min.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
-    <h2>Randevu Listesi</h2>
-    <div class="table-responsive">
-        <table class="table table-hover m-b-0 c_list">
-            <thead>
-                <tr>
-                    <th>
-                        <label class="fancy-checkbox">
-                            <input class="select-all" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </th>
-                    <th>Id</th>
-                    <th>Ad</th>
-                    <th>Model</th>
-                    <th>BaslangicTarihi</th>
-                    <th>BitisTarihi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="width: 50px;">
-                        <label class="fancy-checkbox">
-                            <input class="checkbox-tick" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <p class="">25</p>
-                    </td>
-                    <td>
-                        <p class="">Hyundai</p>
-                    </td>
-                    <td>
-                        <p class="">Accent</p>
-                    </td>
-                    <td>
-                        <p class="">16.02.2021</p>
-                    </td>
-                    <td>
-                        <p class="">22.02.2021</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 50px;">
-                        <label class="fancy-checkbox">
-                            <input class="checkbox-tick" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <p class="">26</p>
-                    </td>
-                    <td>
-                        <p class="">Ford</p>
-                    </td>
-                    <td>
-                        <p class="">Tanus</p>
-                    </td>
-                    <td>
-                        <p class="">17.02.2021</p>
-                    </td>
-                    <td>
-                        <p class="">23.02.2021</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <br />
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" class="btn btn-default" value="Randevuyu İptal Et" />
+
+
+    <h1>Şirket Adı: @sirket.SirketAdi</h1>
+    <h1>Şirket Sayfası</h1>
+    <h3>Randevular</h3>
+    <div>
+        <div class="form-group">
+            <div>
+                <input type="submit" class="btn btn-default" value="Randevuları Listele" />
+            </div>
         </div>
-    </div>
-    <br />
-    <h2>Araba Listesi</h2>
-    <div class="table-responsive">
-        <table class="table table-hover m-b-0 c_list">
-            <thead>
-                <tr>
-                    <th>
-                        <label class="fancy-checkbox">
-                            <input class="select-all" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </th>
-                    <th>Id</th>
-                    <th>Ad</th>
-                    <th>Model</th>
-                    <th>Yas</th>
-                    <th>GunlukKM</th>
-                    <th>Airbag</th>
-                    <th>BagajHacmi</th>
-                    <th>KoltukSayisi</th>
-                    <th>Fiyat</th>
-                    <th>Sirket</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="width: 50px;">
-                        <label class="fancy-checkbox">
-                            <input class="checkbox-tick" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <p class="">25</p>
-                    </td>
-                    <td>
-                        <p class="">Hyundai</p>
-                    </td>
-                    <td>
-                        <p class="">Accent</p>
-                    </td>
-                    <td>
-                        <p class="">4</p>
-                    </td>
-                    <td>
-                        <p class="">100</p>
-                    </td>
-                    <td>
-                        <p class="">true</p>
-                    </td>
-                    <td>
-                        <p class="">100</p>
-                    </td>
-                    <td>
-                        <p class="">5</p>
-                    </td>
-                    <td>
-                        <p class="">120</p>
-                    </td>
-                    <td>
-                        <p class="">myoffice</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 50px;">
-                        <label class="fancy-checkbox">
-                            <input class="checkbox-tick" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <p class="">26</p>
-                    </td>
-                    <td>
-                        <p class="">Ford</p>
-                    </td>
-                    <td>
-                        <p class="">Tanus</p>
-                    </td>
-                    <td>
-                        <p class="">15</p>
-                    </td>
-                    <td>
-                        <p class="">100</p>
-                    </td>
-                    <td>
-                        <p class="">false</p>
-                    </td>
-                    <td>
-                        <p class="">120</p>
-                    </td>
-                    <td>
-                        <p class="">5</p>
-                    </td>
-                    <td>
-                        <p class="">80</p>
-                    </td>
-                    <td>
-                        <p class="">myoffice</p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+        <h4>Randevu Listesi</h4>
+        <div class="table-responsive">
+            <table class="table table-hover m-b-0 c_list">
+                <thead>
+                    <tr>
+                        <th>
+                            <label class="fancy-checkbox">
+                                <input class="select-all" type="checkbox" name="checkbox">
+                                <span></span>
+                            </label>
+                        </th>
+                        <th>Id</th>
+                        <th>Ad</th>
+                        <th>Model</th>
+                        <th>BaslangicTarihi</th>
+                        <th>BitisTarihi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 50px;">
+                            <label class="fancy-checkbox">
+                                <input class="checkbox-tick" type="checkbox" name="checkbox">
+                                <span></span>
+                            </label>
+                        </td>
+                        <td>
+                            <p class="">25</p>
+                        </td>
+                        <td>
+                            <p class="">Hyundai</p>
+                        </td>
+                        <td>
+                            <p class="">Accent</p>
+                        </td>
+                        <td>
+                            <p class="">16.02.2021</p>
+                        </td>
+                        <td>
+                            <p class="">22.02.2021</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px;">
+                            <label class="fancy-checkbox">
+                                <input class="checkbox-tick" type="checkbox" name="checkbox">
+                                <span></span>
+                            </label>
+                        </td>
+                        <td>
+                            <p class="">26</p>
+                        </td>
+                        <td>
+                            <p class="">Ford</p>
+                        </td>
+                        <td>
+                            <p class="">Tanus</p>
+                        </td>
+                        <td>
+                            <p class="">17.02.2021</p>
+                        </td>
+                        <td>
+                            <p class="">23.02.2021</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
+        <div class="form-group">
+            <div>
+                <input type="submit" class="btn btn-default" value="Randevuyu İptal Et" />
+            </div>
+        </div>
+        <hr />
     </div>
 
+    <h3>Arabalar</h3>
+    <div>
+        <div class="form-group">
+            <div>
+                <input type="submit" class="btn btn-default" value="Arabaları Listele" />
+            </div>
+        </div>
+        <h3>Araba Listesi</h3>
+        <div class="table-responsive">
+            <table class="table table-hover m-b-0 c_list">
+                <thead>
+                    <tr>
+                        <th>
+                            <label class="fancy-checkbox">
+                                <input class="select-all" type="checkbox" name="checkbox">
+                                <span></span>
+                            </label>
+                        </th>
+                        <th>Id</th>
+                        <th>Ad</th>
+                        <th>Model</th>
+                        <th>Yas</th>
+                        <th>GunlukKM</th>
+                        <th>Airbag</th>
+                        <th>BagajHacmi</th>
+                        <th>KoltukSayisi</th>
+                        <th>Fiyat</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in arac)
+                    {
+        <tr>
+            <td style="width: 50px;">
+                <label class="fancy-checkbox">
+                    <input class="checkbox-tick" type="checkbox" name="checkbox">
+                    <span></span>
+                </label>
+            </td>
+            <td>
+                <p class="">@item.Id</p>
+            </td>
+            <td>
+                <p class="">@item.AracAdi</p>
+            </td>
+            <td>
+                <p class="">@item.AracModeli</p>
+            </td>
+            <td>
+                <p class="">@item.MinYasSiniri</p>
+            </td>
+            <td>
+                <p class="">@item.GunlukKmSiniri</p>
+            </td>
+            <td>
+                <p class="">@item.AirBag</p>
+            </td>
+            <td>
+                <p class="">@item.BagajHacmi</p>
+            </td>
+            <td>
+                <p class="">@item.KoltukSayisi</p>
+            </td>
+            <td>
+                <p class="">@item.GunlukFiyat</p>
+            </td>
+        </tr>            }
+
+                </tbody>
+            </table>
+        </div>
+        <hr />
+    </div>
     <h4>Yeni Araç Ekle</h4>
-    <hr />
+    <div>
+        <br />
+        @model RentCarApp.Models.Concretes.Arac
+        @using (Html.BeginForm("SirketSayfasi", "Sirket", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.AracAdi, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AracAdi, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Araç Adı</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.AracModeli, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AracModeli, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Araç Modeli</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.EhliyetYasi, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.EhliyetYasi, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Ehliyet Yaşı</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MinYasSiniri, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.MinYasSiniri, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Minimum Yaş Sınırı</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.GunlukKmSiniri, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.GunlukKmSiniri, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Günlük Km Sınırı</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.AnlikKm, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AnlikKm, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Anlık Km</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.AirBag, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.AirBag, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Airbag</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.BagajHacmi, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.BagajHacmi, new { @class = "form-control" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Bagaj Hacmi</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.KoltukSayisi, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.KoltukSayisi, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.GunlukFiyat, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.GunlukFiyat, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.SirketId, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.SirketId, new { @class = "form-control" ,Value = @sirket.Id, @readonly="readonly" })          
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.MusaitlikDurumu, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.MusaitlikDurumu, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Ekle" />
+                </div>
+            </div>
+        }
     </div>
-    <div class="form-group">
-        <label class="col-md-2 control-label">Koltuk Sayısı</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-md-2 control-label">Günlük Fiyat</label>
-        <div class="col-md-10">
-            <input type="text" class="form-control" />
-        </div>
-    </div>
-    <br />
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" class="btn btn-default" value="Araç Ekle" />
-        </div>
-    </div>
-    <br />
 
 </body>
 </html>

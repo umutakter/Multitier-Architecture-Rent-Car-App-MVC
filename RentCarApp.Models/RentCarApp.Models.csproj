@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concretes\Arac.cs" />
     <Compile Include="Concretes\CustomersLogin.cs" />
     <Compile Include="Concretes\Sirket.cs" />
     <Compile Include="Concretes\Customers.cs" />

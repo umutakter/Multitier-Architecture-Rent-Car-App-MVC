@@ -15,7 +15,7 @@ using RentCarApp.Models.Concretes;
 
 namespace RentCarApp.DataAccess.Concretes
 {
-    public class SirketRepository : IRepository<Sirket>, IDisposable
+    public class AracRepository : IRepository<Arac>, IDisposable
     {
         private string _connectionString;
         private string _dbProviderName;
@@ -23,7 +23,7 @@ namespace RentCarApp.DataAccess.Concretes
         private int _rowsAffected, _errorCode;
         private bool _bDisposed;
 
-        public SirketRepository()
+        public AracRepository()
         {
             _connectionString = DBHelper.GetConnectionString();
             _dbProviderName = DBHelper.GetConnectionProvider();
@@ -39,7 +39,7 @@ namespace RentCarApp.DataAccess.Concretes
             {
                 var query = new StringBuilder();
                 query.Append("DELETE ");
-                query.Append("FROM [dbo].[tbl_Sirket] ");
+                query.Append("FROM [dbo].[tbl_Araclar] ");
                 query.Append("WHERE ");
                 query.Append("[Id] = @id ");
                 query.Append("SELECT @intErrorCode=@@ERROR; ");
@@ -58,7 +58,7 @@ namespace RentCarApp.DataAccess.Concretes
                     {
                         if (dbCommand == null)
                             throw new ArgumentNullException(
-                                "dbCommand" + " The db SelectById command for entity [tbl_Sirket] can't be null. ");
+                                "dbCommand" + " The db SelectById command for entity [tbl_Araclar] can't be null. ");
 
                         dbCommand.Connection = dbConnection;
                         dbCommand.CommandText = commandText;
@@ -78,7 +78,7 @@ namespace RentCarApp.DataAccess.Concretes
 
                         if (_errorCode != 0)
                             throw new Exception(
-                                "Deleting Error for entity [tbl_Sirket] reported the Database ErrorCode: " +
+                                "Deleting Error for entity [tbl_Araclar] reported the Database ErrorCode: " +
                                 _errorCode);
                     }
                 }
@@ -88,7 +88,7 @@ namespace RentCarApp.DataAccess.Concretes
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("SirketRepository::Insert:Error occured.", ex);
+                throw new Exception("AracRepository::Insert:Error occured.", ex);
             }
         }
 
@@ -113,7 +113,7 @@ namespace RentCarApp.DataAccess.Concretes
             }
         }
 
-        public bool Insert(Sirket entity)
+        public bool Insert(Arac entity)
         {
             _rowsAffected = 0;
             _errorCode = 0;
@@ -121,11 +121,11 @@ namespace RentCarApp.DataAccess.Concretes
             try
             {
                 var query = new StringBuilder();
-                query.Append("INSERT [dbo].[tbl_Sirket] ");
-                query.Append("( [SirketAdi], [Sehir], [Adres], [AracSayisi], [SirketKullaniciAdi] , [SirketSifre]) ");
+                query.Append("INSERT [dbo].[tbl_Araclar] ");
+                query.Append("( [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi] , [KoltukSayisi], [GunlukFiyat], [SirketId], [MusaitlikDurumu]) ");
                 query.Append("VALUES ");
                 query.Append(
-                    "( @SirketAdi, @Sehir, @Adres, @AracSayisi, @SirketKullaniciAdi, @SirketSifre ) ");
+                    "( @AracAdi, @AracModeli, @EhliyetYasi, @MinYasSiniri, @GunlukKmSiniri, @AnlikKm , @Airbag , @BagajHacmi , @KoltukSayisi , @GunlukFiyat , @SirketId , @MusaitlikDurumu ) ");
                 query.Append("SELECT @intErrorCode=@@ERROR;");
 
                 var commandText = query.ToString();
@@ -141,19 +141,24 @@ namespace RentCarApp.DataAccess.Concretes
                     using (var dbCommand = _dbProviderFactory.CreateCommand())
                     {
                         if (dbCommand == null)
-                            throw new ArgumentNullException("dbCommand" + " The db Insert command for entity [tbl_Sirket] can't be null. ");
+                            throw new ArgumentNullException("dbCommand" + " The db Insert command for entity [tbl_Araclar] can't be null. ");
 
                         dbCommand.Connection = dbConnection;
                         dbCommand.CommandText = commandText;
 
                         //Input Params
-                        DBHelper.AddParameter(dbCommand, "@SirketAdi", CsType.String, ParameterDirection.Input, entity.SirketAdi);
-                        DBHelper.AddParameter(dbCommand, "@Sehir", CsType.String, ParameterDirection.Input, entity.Sehir);
-                        DBHelper.AddParameter(dbCommand, "@Adres", CsType.String, ParameterDirection.Input, entity.Adres);
-                        DBHelper.AddParameter(dbCommand, "@AracSayisi", CsType.Int, ParameterDirection.Input, entity.AracSayisi);
-                        DBHelper.AddParameter(dbCommand, "@SirketKullaniciAdi", CsType.String, ParameterDirection.Input, entity.SirketKullaniciAdi);
-                        DBHelper.AddParameter(dbCommand, "@SirketSifre", CsType.String, ParameterDirection.Input, entity.SirketSifre);
-
+                        DBHelper.AddParameter(dbCommand, "@AracAdi", CsType.String, ParameterDirection.Input, entity.AracAdi);
+                        DBHelper.AddParameter(dbCommand, "@AracModeli", CsType.String, ParameterDirection.Input, entity.AracModeli);
+                        DBHelper.AddParameter(dbCommand, "@EhliyetYasi", CsType.String, ParameterDirection.Input, entity.EhliyetYasi);
+                        DBHelper.AddParameter(dbCommand, "@MinYasSiniri", CsType.String, ParameterDirection.Input, entity.MinYasSiniri);
+                        DBHelper.AddParameter(dbCommand, "@GunlukKmSiniri", CsType.String, ParameterDirection.Input, entity.GunlukKmSiniri);
+                        DBHelper.AddParameter(dbCommand, "@AnlikKm", CsType.String, ParameterDirection.Input, entity.AnlikKm);
+                        DBHelper.AddParameter(dbCommand, "@Airbag", CsType.String, ParameterDirection.Input, entity.AirBag);
+                        DBHelper.AddParameter(dbCommand, "@BagajHacmi", CsType.String, ParameterDirection.Input, entity.BagajHacmi);
+                        DBHelper.AddParameter(dbCommand, "@KoltukSayisi", CsType.String, ParameterDirection.Input, entity.KoltukSayisi);
+                        DBHelper.AddParameter(dbCommand, "@GunlukFiyat", CsType.String, ParameterDirection.Input, entity.GunlukFiyat);
+                        DBHelper.AddParameter(dbCommand, "@SirketId", CsType.Int, ParameterDirection.Input, entity.SirketId);
+                        DBHelper.AddParameter(dbCommand, "@MusaitlikDurumu", CsType.String, ParameterDirection.Input, entity.MusaitlikDurumu);
                         //Output Params
                         DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int, ParameterDirection.Output, null);
 
@@ -166,7 +171,7 @@ namespace RentCarApp.DataAccess.Concretes
                         _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
 
                         if (_errorCode != 0)
-                            throw new Exception("Inserting Error for entity [tbl_Sirket] reported the Database ErrorCode: " + _errorCode);
+                            throw new Exception("Inserting Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
                     }
                 }
                 //Return the results of query/ies
@@ -175,24 +180,24 @@ namespace RentCarApp.DataAccess.Concretes
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("SirketRepository::Insert:Error occured.", ex);
+                throw new Exception("AracRepository::Insert:Error occured.", ex);
             }
         }
 
-        public IList<Sirket> SelectAll()
+        public IList<Arac> SelectAll()
         {
             _errorCode = 0;
             _rowsAffected = 0;
 
-            IList<Sirket> sirket = new List<Sirket>();
+            IList<Arac> arac = new List<Arac>();
 
             try
             {
                 var query = new StringBuilder();
                 query.Append("SELECT ");
                 query.Append(
-                    "[Id], [SirketAdi], [Sehir], [Adres], [AracSayisi], [SirketPuani] ");
-                query.Append("FROM [dbo].[tbl_Sirket] ");
+                    "[Id], [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [MusaitlikDurumu]");
+                query.Append("FROM [dbo].[tbl_Araclar] ");
                 query.Append("SELECT @intErrorCode=@@ERROR; ");
 
                 var commandText = query.ToString();
@@ -209,7 +214,7 @@ namespace RentCarApp.DataAccess.Concretes
                     {
                         if (dbCommand == null)
                             throw new ArgumentNullException(
-                                "dbCommand" + " The db SelectById command for entity [tbl_Sirket] can't be null. ");
+                                "dbCommand" + " The db SelectById command for entity [tbl_Araclar] can't be null. ");
 
                         dbCommand.Connection = dbConnection;
                         dbCommand.CommandText = commandText;
@@ -223,7 +228,7 @@ namespace RentCarApp.DataAccess.Concretes
                         //Open Connection
                         if (dbConnection.State != ConnectionState.Open)
                             dbConnection.Open();
-
+                           
                         //Execute query.
                         using (var reader = dbCommand.ExecuteReader())
                         {
@@ -231,15 +236,21 @@ namespace RentCarApp.DataAccess.Concretes
                             {
                                 while (reader.Read())
                                 {
-                                    var entity = new Sirket();
+                                    var entity = new Arac();
                                     entity.Id = reader.GetInt32(0);
-                                    entity.SirketAdi = reader.GetString(1);
-                                    entity.Sehir = reader.GetString(2);
-                                    entity.Adres = reader.GetString(3);
-                                    entity.SirketPuani = reader.GetInt32(0);
-                                    entity.AracSayisi = reader.GetInt32(0);
+                                    entity.AracAdi = reader.GetString(1);
+                                    entity.AracModeli = reader.GetString(2);
+                                    entity.EhliyetYasi = reader.GetString(3);
+                                    entity.MinYasSiniri = reader.GetString(0);
+                                    entity.GunlukKmSiniri = reader.GetString(0);
+                                    entity.AnlikKm = reader.GetString(0);
+                                    entity.AirBag = reader.GetString(1);
+                                    entity.BagajHacmi = reader.GetString(2);
+                                    entity.KoltukSayisi = reader.GetString(3);
+                                    entity.GunlukFiyat = reader.GetString(0);
+                                    entity.MusaitlikDurumu = reader.GetString(0);
 
-                                    sirket.Add(entity);
+                                    arac.Add(entity);
                                 }
                             }
 
@@ -250,35 +261,35 @@ namespace RentCarApp.DataAccess.Concretes
                         if (_errorCode != 0)
                         {
                             // Throw error.
-                            throw new Exception("Selecting All Error for entity [tbl_Sirket] reported the Database ErrorCode: " + _errorCode);
+                            throw new Exception("Selecting All Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
 
                         }
                     }
                 }
                 // Return list
-                return sirket;
+                return arac;
             }
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("Sirketepository::SelectAll:Error occured.", ex);
+                throw new Exception("AracRepository::SelectAll:Error occured.", ex);
             }
         }
 
-        public Sirket SelectedById(int id)
+        public Arac SelectedById(int id)
         {
             _errorCode = 0;
             _rowsAffected = 0;
 
-            Sirket sirket = null;
+            Arac arac = null;
 
             try
             {
                 var query = new StringBuilder();
                 query.Append("SELECT ");
                 query.Append(
-                    "[Id], [SirketAdi], [Sehir], [Adres], [AracSayisi], [SirketPuani] ");
-                query.Append("FROM [dbo].[tbl_Sirket] ");
+                    "[Id],  [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [MusaitlikDurumu]");
+                query.Append("FROM [dbo].[tbl_Araclar] ");
                 query.Append("WHERE ");
                 query.Append("[Id] = @id ");
                 query.Append("SELECT @intErrorCode=@@ERROR; ");
@@ -297,7 +308,7 @@ namespace RentCarApp.DataAccess.Concretes
                     {
                         if (dbCommand == null)
                             throw new ArgumentNullException(
-                                "dbCommand" + " The db SelectById command for entity [tbl_Sirket] can't be null. ");
+                                "dbCommand" + " The db SelectById command for entity [tbl_Araclar] can't be null. ");
 
                         dbCommand.Connection = dbConnection;
                         dbCommand.CommandText = commandText;
@@ -319,14 +330,20 @@ namespace RentCarApp.DataAccess.Concretes
                             {
                                 while (reader.Read())
                                 {
-                                    var entity = new Sirket();
+                                    var entity = new Arac();
                                     entity.Id = reader.GetInt32(0);
-                                    entity.SirketAdi = reader.GetString(1);
-                                    entity.Sehir = reader.GetString(2);
-                                    entity.Adres = reader.GetString(3);
-                                    entity.SirketPuani = reader.GetInt32(0);
-                                    entity.AracSayisi = reader.GetInt32(0);
-                                    sirket = entity;
+                                    entity.AracAdi = reader.GetString(1);
+                                    entity.AracModeli = reader.GetString(2);
+                                    entity.EhliyetYasi = reader.GetString(3);
+                                    entity.MinYasSiniri = reader.GetString(4);
+                                    entity.GunlukKmSiniri = reader.GetString(5);
+                                    entity.AnlikKm = reader.GetString(6);
+                                    entity.AirBag = reader.GetString(7);
+                                    entity.BagajHacmi = reader.GetString(8);
+                                    entity.KoltukSayisi = reader.GetString(9);
+                                    entity.GunlukFiyat = reader.GetString(10);
+                                    entity.MusaitlikDurumu = reader.GetString(12);
+                                    arac = entity;
                                     break;
                                 }
                             }
@@ -337,7 +354,7 @@ namespace RentCarApp.DataAccess.Concretes
                         if (_errorCode != 0)
                         {
                             // Throw error.
-                            throw new Exception("Selecting Error for entity [tbl_Sirket] reported the Database ErrorCode: " + _errorCode);
+                            throw new Exception("Selecting Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
                         }
                     }
                 }
@@ -347,21 +364,21 @@ namespace RentCarApp.DataAccess.Concretes
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("SirketRepository::SelectById:Error occured.", ex);
+                throw new Exception("AracRepository::SelectById:Error occured.", ex);
             }
-            return sirket;
+            return arac;
         }
 
-        public bool Update(Sirket entity)
+        public bool Update(Arac entity)
         {
             _rowsAffected = 0;
             _errorCode = 0;
-
+         
             try
             {
                 var query = new StringBuilder();
-                query.Append(" UPDATE [dbo].[tbl_Sirket] ");
-                query.Append(" SET [SirketAdi] = @SirketAdi, [Sehir] = @Sehir, [Adres] =  @Adres, [AracSayisi] = @AracSayisi, [SirketPuani] = @SirketPuani, [SirketKullanıcıAdi] = @SirketKullanıcıAdi ,[SirketSifre] = @SirketSifre");
+                query.Append(" UPDATE [dbo].[tbl_Araclar] ");
+                query.Append(" SET [AracAdi] = @AracAdi, [AracModeli] = @AracModeli, [EhliyetYasi] =  @EhliyetYasi, [MinYasSiniri] = @MinYasSiniri, [GunlukKmSiniri] = @GunlukKmSiniri, [AnlikKm] = @AnlikKm ,[Airbag] = @Airbag,[BagajHacmi] = @BagajHacmi,[KoltukSayisi] = @KoltukSayisi,[GunlukFiyat] = @GunlukFiyat,[MusaitlikDurumu] = @MusaitlikDurumu");
                 query.Append(" WHERE ");
                 query.Append(" [Id] = @Id ");
                 query.Append(" SELECT @intErrorCode = @@ERROR; ");
@@ -379,18 +396,23 @@ namespace RentCarApp.DataAccess.Concretes
                     using (var dbCommand = _dbProviderFactory.CreateCommand())
                     {
                         if (dbCommand == null)
-                            throw new ArgumentNullException("dbCommand" + " The db Insert command for entity [tbl_Sirket] can't be null. ");
+                            throw new ArgumentNullException("dbCommand" + " The db Insert command for entity [tbl_Araclar] can't be null. ");
 
                         dbCommand.Connection = dbConnection;
                         dbCommand.CommandText = commandText;
 
                         //Input Params
-                        DBHelper.AddParameter(dbCommand, "@SirketAdi", CsType.String, ParameterDirection.Input, entity.SirketAdi);
-                        DBHelper.AddParameter(dbCommand, "@Sehir", CsType.String, ParameterDirection.Input, entity.Sehir);
-                        DBHelper.AddParameter(dbCommand, "@Adres", CsType.String, ParameterDirection.Input, entity.Adres);
-                        DBHelper.AddParameter(dbCommand, "@AracSayisi", CsType.Int, ParameterDirection.Input, entity.AracSayisi);
-                        DBHelper.AddParameter(dbCommand, "@SirketKullaniciAdi", CsType.String, ParameterDirection.Input, entity.SirketKullaniciAdi);
-                        DBHelper.AddParameter(dbCommand, "@SirketSifre", CsType.String, ParameterDirection.Input, entity.SirketSifre);
+                        DBHelper.AddParameter(dbCommand, "@AracAdi", CsType.String, ParameterDirection.Input, entity.AracAdi);
+                        DBHelper.AddParameter(dbCommand, "@AracModeli", CsType.String, ParameterDirection.Input, entity.AracModeli);
+                        DBHelper.AddParameter(dbCommand, "@EhliyetYasi", CsType.Int, ParameterDirection.Input, entity.EhliyetYasi);
+                        DBHelper.AddParameter(dbCommand, "@MinYasSiniri", CsType.Int, ParameterDirection.Input, entity.MinYasSiniri);
+                        DBHelper.AddParameter(dbCommand, "@GunlukKmSiniri", CsType.Int, ParameterDirection.Input, entity.GunlukKmSiniri);
+                        DBHelper.AddParameter(dbCommand, "@AnlikKm", CsType.Int, ParameterDirection.Input, entity.AnlikKm);
+                        DBHelper.AddParameter(dbCommand, "@Airbag", CsType.Boolean, ParameterDirection.Input, entity.AirBag);
+                        DBHelper.AddParameter(dbCommand, "@BagajHacmi", CsType.Int, ParameterDirection.Input, entity.BagajHacmi);
+                        DBHelper.AddParameter(dbCommand, "@KoltukSayisi", CsType.Int, ParameterDirection.Input, entity.KoltukSayisi);
+                        DBHelper.AddParameter(dbCommand, "@GunlukFiyat", CsType.Int, ParameterDirection.Input, entity.GunlukFiyat);
+                        DBHelper.AddParameter(dbCommand, "@MusaitlikDurumu", CsType.Boolean, ParameterDirection.Input, entity.MusaitlikDurumu);
                         //Output Params
                         DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int, ParameterDirection.Output, null);
 
@@ -403,7 +425,7 @@ namespace RentCarApp.DataAccess.Concretes
                         _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
 
                         if (_errorCode != 0)
-                            throw new Exception("Updating Error for entity [tbl_Sirket] reported the Database ErrorCode: " + _errorCode);
+                            throw new Exception("Updating Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
                     }
                 }
                 //Return the results of query/ies
@@ -412,26 +434,26 @@ namespace RentCarApp.DataAccess.Concretes
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("SirketRepository::Update:Error occured.", ex);
+                throw new Exception("AracRepository::Update:Error occured.", ex);
             }
         }
 
-        public Sirket Login(string sirketKullaniciAdi, string sirketSifre)
+        public IList<Arac> SelectAllSirketCar(int sirketId)
         {
             _errorCode = 0;
             _rowsAffected = 0;
 
-            Sirket sirket = null;
+            IList<Arac> arac = new List<Arac>();
 
             try
             {
                 var query = new StringBuilder();
                 query.Append("SELECT ");
                 query.Append(
-                    "[Id], [SirketAdi], [Sehir], [Adres], [AracSayisi], [SirketPuani] , [SirketKullaniciAdi],[SirketSifre] ");
-                query.Append("FROM [dbo].[tbl_Sirket] ");
+                    "[Id], [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [SirketId], [MusaitlikDurumu]");
+                query.Append("FROM [dbo].[tbl_Araclar] ");
                 query.Append("WHERE ");
-                query.Append("[SirketKullaniciAdi] = @sirketKullaniciAdi AND [SirketSifre] = @sirketSifre ");
+                query.Append("[SirketId] = @sirketId ");
                 query.Append("SELECT @intErrorCode=@@ERROR; ");
 
                 var commandText = query.ToString();
@@ -448,16 +470,17 @@ namespace RentCarApp.DataAccess.Concretes
                     {
                         if (dbCommand == null)
                             throw new ArgumentNullException(
-                                "dbCommand" + " The db Login command for entity [tbl_Musteri] can't be null. ");
+                                "dbCommand" + " The db SelectById command for entity [tbl_Araclar] can't be null. ");
 
                         dbCommand.Connection = dbConnection;
                         dbCommand.CommandText = commandText;
 
-                        //Input Parameters
-                        DBHelper.AddParameter(dbCommand, "@sirketKullaniciAdi", CsType.String, ParameterDirection.Input, sirketKullaniciAdi);
-                        DBHelper.AddParameter(dbCommand, "@sirketSifre", CsType.String, ParameterDirection.Input, sirketSifre);
+                        //Input Parameters - None
+
                         //Output Parameters
-                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int, ParameterDirection.Output, null);
+                        DBHelper.AddParameter(dbCommand, "@sirketId", CsType.Int, ParameterDirection.Input, sirketId);
+                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int,
+                            ParameterDirection.Output, null);
 
                         //Open Connection
                         if (dbConnection.State != ConnectionState.Open)
@@ -470,15 +493,24 @@ namespace RentCarApp.DataAccess.Concretes
                             {
                                 while (reader.Read())
                                 {
-                                    var entity = new Sirket();
+                                    var entity = new Arac();
                                     entity.Id = reader.GetInt32(0);
-                                    entity.SirketAdi = reader.GetString(1);
-                                    entity.SirketKullaniciAdi = reader.GetString(2);
-                                    entity.SirketSifre = reader.GetString(3);
-                                    sirket = entity;
-                                    break;
+                                    entity.AracAdi = reader.GetString(1);
+                                    entity.AracModeli = reader.GetString(2);
+                                    entity.EhliyetYasi = reader.GetString(3);
+                                    entity.MinYasSiniri = reader.GetString(4);
+                                    entity.GunlukKmSiniri = reader.GetString(5);
+                                    entity.AnlikKm = reader.GetString(6);
+                                    entity.AirBag = reader.GetString(7);
+                                    entity.BagajHacmi = reader.GetString(8);
+                                    entity.KoltukSayisi = reader.GetString(9);
+                                    entity.GunlukFiyat = reader.GetString(10);
+                                    entity.MusaitlikDurumu = reader.GetString(12);
+
+                                    arac.Add(entity);
                                 }
                             }
+
                         }
 
                         _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
@@ -486,28 +518,19 @@ namespace RentCarApp.DataAccess.Concretes
                         if (_errorCode != 0)
                         {
                             // Throw error.
-                            throw new Exception("Selecting Error for entity [tbl_Sirket] reported the Database ErrorCode: " + _errorCode);
-                        }
-                        using (var reader = dbCommand.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                return sirket;
-                            }
-                            else
-                            {
-                                return null;
-                            }
+                            throw new Exception("Selecting All Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
+
                         }
                     }
                 }
+                // Return list
+                return arac;
             }
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("SirketRepository::SelectById:Error occured.", ex);
+                throw new Exception("AracRepository::SelectAll:Error occured.", ex);
             }
-
         }
     }
 }
