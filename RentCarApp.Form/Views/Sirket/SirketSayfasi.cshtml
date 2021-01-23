@@ -1,7 +1,10 @@
 ﻿@using RentCarApp.Models.Concretes
+@model RentCarApp.Models.Concretes.Arac
 @{ ViewBag.Title = "Sirket Sayfasi";
     Sirket sirket = (Sirket)Session["Sirket"];
-    List<Arac> arac = (List<Arac>)Session["Arac"]; 
+    List<Arac> rezervasyon = (List<Arac>)Session["Razervasyon"];
+    List<Arac> arac = (List<Arac>)Session["Arac"];
+    string sirketId = sirket.Id.ToString();
  }
 
 <!DOCTYPE html>
@@ -19,108 +22,75 @@
     <h1>Şirket Adı: @sirket.SirketAdi</h1>
     <h1>Şirket Sayfası</h1>
     <h3>Randevular</h3>
+    <hr />
     <div>
-        <div class="form-group">
-            <div>
-                <input type="submit" class="btn btn-default" value="Randevuları Listele" />
-            </div>
-        </div>
-
         <h4>Randevu Listesi</h4>
         <div class="table-responsive">
             <table class="table table-hover m-b-0 c_list">
                 <thead>
                     <tr>
-                        <th>
-                            <label class="fancy-checkbox">
-                                <input class="select-all" type="checkbox" name="checkbox">
-                                <span></span>
-                            </label>
-                        </th>
                         <th>Id</th>
                         <th>Ad</th>
                         <th>Model</th>
-                        <th>BaslangicTarihi</th>
-                        <th>BitisTarihi</th>
+                        <th>MüsaitlikDurumu</th>
                     </tr>
                 </thead>
                 <tbody>
+                   @foreach (var rez in rezervasyon)
+                    {
                     <tr>
-                        <td style="width: 50px;">
-                            <label class="fancy-checkbox">
-                                <input class="checkbox-tick" type="checkbox" name="checkbox">
-                                <span></span>
-                            </label>
+                        <td>
+                            <p class="">@rez.Id</p>
                         </td>
                         <td>
-                            <p class="">25</p>
+                            <p class="">@rez.AracAdi</p>
                         </td>
                         <td>
-                            <p class="">Hyundai</p>
+                            <p class="">@rez.AracModeli</p>
                         </td>
                         <td>
-                            <p class="">Accent</p>
+                            <p class="">@rez.MusaitlikDurumu</p>
                         </td>
-                        <td>
-                            <p class="">16.02.2021</p>
-                        </td>
-                        <td>
-                            <p class="">22.02.2021</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 50px;">
-                            <label class="fancy-checkbox">
-                                <input class="checkbox-tick" type="checkbox" name="checkbox">
-                                <span></span>
-                            </label>
-                        </td>
-                        <td>
-                            <p class="">26</p>
-                        </td>
-                        <td>
-                            <p class="">Ford</p>
-                        </td>
-                        <td>
-                            <p class="">Tanus</p>
-                        </td>
-                        <td>
-                            <p class="">17.02.2021</p>
-                        </td>
-                        <td>
-                            <p class="">23.02.2021</p>
-                        </td>
-                    </tr>
+                    </tr>}
                 </tbody>
             </table>
         </div>
         <br />
-        <div class="form-group">
+        <div>
+           @using (Html.BeginForm("AracTeslim", "Sirket", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
             <div>
-                <input type="submit" class="btn btn-default" value="Randevuyu İptal Et" />
+                <div class="form-group">
+                    <label class="col-md-2 control-label">Araç Id</label>
+                    <div class="col-md-10">
+                        <input type="text" name="aracId" class="form-control" placeholder="Araç Id" />
+                    </div>
+                    <label class="col-md-2 control-label">Sirket Id</label>
+                    <div class="col-md-10">
+                        <input type="text" name="sirketId" class="form-control" placeholder="Sirket Id" value="@sirketId" disabled />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" class="btn btn-default" value="Aracı Teslim Al" />
+                    </div>
+                </div>      
             </div>
+            }
         </div>
-        <hr />
+
     </div>
 
     <h3>Arabalar</h3>
+    <hr />
     <div>
-        <div class="form-group">
-            <div>
-                <input type="submit" class="btn btn-default" value="Arabaları Listele" />
-            </div>
-        </div>
-        <h3>Araba Listesi</h3>
+
+        <h4>Araba Listesi</h4>
         <div class="table-responsive">
             <table class="table table-hover m-b-0 c_list">
                 <thead>
                     <tr>
-                        <th>
-                            <label class="fancy-checkbox">
-                                <input class="select-all" type="checkbox" name="checkbox">
-                                <span></span>
-                            </label>
-                        </th>
                         <th>Id</th>
                         <th>Ad</th>
                         <th>Model</th>
@@ -133,45 +103,38 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    @foreach (var item in arac)
-                    {
-        <tr>
-            <td style="width: 50px;">
-                <label class="fancy-checkbox">
-                    <input class="checkbox-tick" type="checkbox" name="checkbox">
-                    <span></span>
-                </label>
-            </td>
-            <td>
-                <p class="">@item.Id</p>
-            </td>
-            <td>
-                <p class="">@item.AracAdi</p>
-            </td>
-            <td>
-                <p class="">@item.AracModeli</p>
-            </td>
-            <td>
-                <p class="">@item.MinYasSiniri</p>
-            </td>
-            <td>
-                <p class="">@item.GunlukKmSiniri</p>
-            </td>
-            <td>
-                <p class="">@item.AirBag</p>
-            </td>
-            <td>
-                <p class="">@item.BagajHacmi</p>
-            </td>
-            <td>
-                <p class="">@item.KoltukSayisi</p>
-            </td>
-            <td>
-                <p class="">@item.GunlukFiyat</p>
-            </td>
-        </tr>            }
-
+                   @foreach (var item in arac)
+                   {
+                        <tr>
+                            <td>
+                                <p class="">@item.Id</p>
+                            </td>
+                            <td>
+                                <p class="">@item.AracAdi</p>
+                            </td>
+                            <td>
+                                <p class="">@item.AracModeli</p>
+                            </td>
+                            <td>
+                                <p class="">@item.MinYasSiniri</p>
+                            </td>
+                            <td>
+                                <p class="">@item.GunlukKmSiniri</p>
+                            </td>
+                            <td>
+                                <p class="">@item.AirBag</p>
+                            </td>
+                            <td>
+                                <p class="">@item.BagajHacmi</p>
+                            </td>
+                            <td>
+                                <p class="">@item.KoltukSayisi</p>
+                            </td>
+                            <td>
+                                <p class="">@item.GunlukFiyat</p>
+                            </td>
+                        </tr>            
+                     }
                 </tbody>
             </table>
         </div>
@@ -180,8 +143,8 @@
     <h4>Yeni Araç Ekle</h4>
     <div>
         <br />
-        @model RentCarApp.Models.Concretes.Arac
-        @using (Html.BeginForm("SirketSayfasi", "Sirket", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+        @using (Html.BeginForm("AracEkle", "Sirket", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary("", new { @class = "text-danger" })

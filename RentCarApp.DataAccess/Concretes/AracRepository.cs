@@ -288,7 +288,7 @@ namespace RentCarApp.DataAccess.Concretes
                 var query = new StringBuilder();
                 query.Append("SELECT ");
                 query.Append(
-                    "[Id],  [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [MusaitlikDurumu]");
+                    "[Id],  [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [SirketId], [MusaitlikDurumu]");
                 query.Append("FROM [dbo].[tbl_Araclar] ");
                 query.Append("WHERE ");
                 query.Append("[Id] = @id ");
@@ -342,6 +342,7 @@ namespace RentCarApp.DataAccess.Concretes
                                     entity.BagajHacmi = reader.GetString(8);
                                     entity.KoltukSayisi = reader.GetString(9);
                                     entity.GunlukFiyat = reader.GetString(10);
+                                    entity.SirketId = reader.GetInt32(11);
                                     entity.MusaitlikDurumu = reader.GetString(12);
                                     arac = entity;
                                     break;
@@ -530,6 +531,314 @@ namespace RentCarApp.DataAccess.Concretes
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
                 throw new Exception("AracRepository::SelectAll:Error occured.", ex);
+            }
+        }
+
+        public IList<Arac> SelectAllMusaitCar()
+        {
+            _errorCode = 0;
+            _rowsAffected = 0;
+
+            IList<Arac> arac = new List<Arac>();
+
+            try
+            {
+                var query = new StringBuilder();
+                query.Append("SELECT ");
+                query.Append(
+                    "[Id], [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [SirketId], [MusaitlikDurumu]");
+                query.Append("FROM [dbo].[tbl_Araclar] ");
+                query.Append("WHERE ");
+                query.Append("[MusaitlikDurumu] = '1' ");
+                query.Append("SELECT @intErrorCode=@@ERROR; ");
+
+                var commandText = query.ToString();
+                query.Clear();
+
+                using (var dbConnection = _dbProviderFactory.CreateConnection())
+                {
+                    if (dbConnection == null)
+                        throw new ArgumentNullException("dbConnection", "The db connection can't be null.");
+
+                    dbConnection.ConnectionString = _connectionString;
+
+                    using (var dbCommand = _dbProviderFactory.CreateCommand())
+                    {
+                        if (dbCommand == null)
+                            throw new ArgumentNullException(
+                                "dbCommand" + " The db SelectById command for entity [tbl_Araclar] can't be null. ");
+
+                        dbCommand.Connection = dbConnection;
+                        dbCommand.CommandText = commandText;
+
+                        //Input Parameters - None
+
+                        //Output Parameters
+                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int,
+                            ParameterDirection.Output, null);
+
+                        //Open Connection
+                        if (dbConnection.State != ConnectionState.Open)
+                            dbConnection.Open();
+
+                        //Execute query.
+                        using (var reader = dbCommand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    var entity = new Arac();
+                                    entity.Id = reader.GetInt32(0);
+                                    entity.AracAdi = reader.GetString(1);
+                                    entity.AracModeli = reader.GetString(2);
+                                    entity.EhliyetYasi = reader.GetString(3);
+                                    entity.MinYasSiniri = reader.GetString(4);
+                                    entity.GunlukKmSiniri = reader.GetString(5);
+                                    entity.AnlikKm = reader.GetString(6);
+                                    entity.AirBag = reader.GetString(7);
+                                    entity.BagajHacmi = reader.GetString(8);
+                                    entity.KoltukSayisi = reader.GetString(9);
+                                    entity.GunlukFiyat = reader.GetString(10);
+                                    entity.MusaitlikDurumu = reader.GetString(12);
+
+                                    arac.Add(entity);
+                                }
+                            }
+
+                        }
+
+                        _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
+
+                        if (_errorCode != 0)
+                        {
+                            // Throw error.
+                            throw new Exception("Selecting All Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
+
+                        }
+                    }
+                }
+                // Return list
+                return arac;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("AracRepository::SelectAll:Error occured.", ex);
+            }
+        }
+
+        public IList<Arac> SelectAllRezervasyonCar(int sirketId)
+        {
+            _errorCode = 0;
+            _rowsAffected = 0;
+
+            IList<Arac> arac = new List<Arac>();
+
+            try
+            {
+                var query = new StringBuilder();
+                query.Append("SELECT ");
+                query.Append(
+                    "[Id], [AracAdi], [AracModeli], [EhliyetYasi], [MinYasSiniri], [GunlukKmSiniri] , [AnlikKm], [Airbag] , [BagajHacmi], [KoltukSayisi], [GunlukFiyat], [SirketId], [MusaitlikDurumu]");
+                query.Append("FROM [dbo].[tbl_Araclar] ");
+                query.Append("WHERE ");
+                query.Append("[SirketId] = @sirketId AND [MusaitlikDurumu]='0'");
+                query.Append("SELECT @intErrorCode=@@ERROR; ");
+
+                var commandText = query.ToString();
+                query.Clear();
+
+                using (var dbConnection = _dbProviderFactory.CreateConnection())
+                {
+                    if (dbConnection == null)
+                        throw new ArgumentNullException("dbConnection", "The db connection can't be null.");
+
+                    dbConnection.ConnectionString = _connectionString;
+
+                    using (var dbCommand = _dbProviderFactory.CreateCommand())
+                    {
+                        if (dbCommand == null)
+                            throw new ArgumentNullException(
+                                "dbCommand" + " The db SelectById command for entity [tbl_Araclar] can't be null. ");
+
+                        dbCommand.Connection = dbConnection;
+                        dbCommand.CommandText = commandText;
+
+                        //Input Parameters - None
+
+                        //Output Parameters
+                        DBHelper.AddParameter(dbCommand, "@sirketId", CsType.Int, ParameterDirection.Input, sirketId);
+                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int,
+                            ParameterDirection.Output, null);
+
+                        //Open Connection
+                        if (dbConnection.State != ConnectionState.Open)
+                            dbConnection.Open();
+
+                        //Execute query.
+                        using (var reader = dbCommand.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    var entity = new Arac();
+                                    entity.Id = reader.GetInt32(0);
+                                    entity.AracAdi = reader.GetString(1);
+                                    entity.AracModeli = reader.GetString(2);
+                                    entity.EhliyetYasi = reader.GetString(3);
+                                    entity.MinYasSiniri = reader.GetString(4);
+                                    entity.GunlukKmSiniri = reader.GetString(5);
+                                    entity.AnlikKm = reader.GetString(6);
+                                    entity.AirBag = reader.GetString(7);
+                                    entity.BagajHacmi = reader.GetString(8);
+                                    entity.KoltukSayisi = reader.GetString(9);
+                                    entity.GunlukFiyat = reader.GetString(10);
+                                    entity.MusaitlikDurumu = reader.GetString(12);
+
+                                    arac.Add(entity);
+                                }
+                            }
+
+                        }
+
+                        _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
+
+                        if (_errorCode != 0)
+                        {
+                            // Throw error.
+                            throw new Exception("Selecting All Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
+
+                        }
+                    }
+                }
+                // Return list
+                return arac;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("AracRepository::SelectAll:Error occured.", ex);
+            }
+        }
+
+        public bool UpdateMusaitlikDurumu(int id)
+        {
+            _rowsAffected = 0;
+            _errorCode = 0;
+
+            try
+            {
+                var query = new StringBuilder();
+                query.Append(" UPDATE [dbo].[tbl_Araclar] ");
+                query.Append(" SET [MusaitlikDurumu] = '1'");
+                query.Append(" WHERE ");
+                query.Append(" [Id] = @Id ");
+                query.Append(" SELECT @intErrorCode = @@ERROR; ");
+
+                var commandText = query.ToString();
+                query.Clear();
+
+                using (var dbConnection = _dbProviderFactory.CreateConnection())
+                {
+                    if (dbConnection == null)
+                        throw new ArgumentNullException("dbConnection", "The db connection can't be null.");
+
+                    dbConnection.ConnectionString = _connectionString;
+
+                    using (var dbCommand = _dbProviderFactory.CreateCommand())
+                    {
+                        if (dbCommand == null)
+                            throw new ArgumentNullException("dbCommand" + " The db Insert command for entity [tbl_Araclar] can't be null. ");
+
+                        dbCommand.Connection = dbConnection;
+                        dbCommand.CommandText = commandText;
+
+                        //Input Params
+                        DBHelper.AddParameter(dbCommand, "@Id", CsType.String, ParameterDirection.Input, id);
+
+                        //Output Params
+                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int, ParameterDirection.Output, null);
+
+                        //Open Connection
+                        if (dbConnection.State != ConnectionState.Open)
+                            dbConnection.Open();
+
+                        //Execute query
+                        _rowsAffected = dbCommand.ExecuteNonQuery();
+                        _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
+
+                        if (_errorCode != 0)
+                            throw new Exception("Updating Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
+                    }
+                }
+                //Return the results of query/ies
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("AracRepository::Update:Error occured.", ex);
+            }
+        }
+        public bool AracRezervasyonu(int id)
+        {
+            _rowsAffected = 0;
+            _errorCode = 0;
+
+            try
+            {
+                var query = new StringBuilder();
+                query.Append(" UPDATE [dbo].[tbl_Araclar] ");
+                query.Append(" SET [MusaitlikDurumu] = '0'");
+                query.Append(" WHERE ");
+                query.Append(" [Id] = @Id ");
+                query.Append(" SELECT @intErrorCode = @@ERROR; ");
+
+                var commandText = query.ToString();
+                query.Clear();
+
+                using (var dbConnection = _dbProviderFactory.CreateConnection())
+                {
+                    if (dbConnection == null)
+                        throw new ArgumentNullException("dbConnection", "The db connection can't be null.");
+
+                    dbConnection.ConnectionString = _connectionString;
+
+                    using (var dbCommand = _dbProviderFactory.CreateCommand())
+                    {
+                        if (dbCommand == null)
+                            throw new ArgumentNullException("dbCommand" + " The db Insert command for entity [tbl_Araclar] can't be null. ");
+
+                        dbCommand.Connection = dbConnection;
+                        dbCommand.CommandText = commandText;
+
+                        //Input Params
+                        DBHelper.AddParameter(dbCommand, "@Id", CsType.String, ParameterDirection.Input, id);
+
+                        //Output Params
+                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int, ParameterDirection.Output, null);
+
+                        //Open Connection
+                        if (dbConnection.State != ConnectionState.Open)
+                            dbConnection.Open();
+
+                        //Execute query
+                        _rowsAffected = dbCommand.ExecuteNonQuery();
+                        _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
+
+                        if (_errorCode != 0)
+                            throw new Exception("Updating Error for entity [tbl_Araclar] reported the Database ErrorCode: " + _errorCode);
+                    }
+                }
+                //Return the results of query/ies
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("AracRepository::Update:Error occured.", ex);
             }
         }
     }

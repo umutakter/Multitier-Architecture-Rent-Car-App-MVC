@@ -420,7 +420,7 @@ namespace RentCarApp.DataAccess.Concretes
             }
         }
 
-        public bool Login(string kullaniciAdi , string sifre)
+        public Customers Login(string kullaniciAdi , string sifre)
         {
             _errorCode = 0;
             _rowsAffected = 0;
@@ -497,11 +497,11 @@ namespace RentCarApp.DataAccess.Concretes
                         {
                             if (reader.HasRows)
                             {
-                                return true;
+                                return musteri;
                             }
                             else
                             {
-                                return false;
+                                return null;
                             }
                         }
                     }   

@@ -134,6 +134,49 @@ namespace RentCarApp.BusinessLogic
                 throw new Exception("BusinessLogic:AracBusiness::SelectAllCArac::Error occured.", ex);
             }
         }
+        public List<Arac> SelectAllMusaitArac()
+        {
+            var responseEntities = new List<Arac>();
+
+            try
+            {
+                using (var repo = new AracRepository())
+                {
+                    foreach (var entity in repo.SelectAllMusaitCar())
+                    {
+                        responseEntities.Add(entity);
+                    }
+                }
+                return responseEntities;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:AracBusiness::SelectAllCArac::Error occured.", ex);
+            }
+        }
+
+        public List<Arac> SelectAllRezervasyonArac(int SirketId)
+        {
+            var responseEntities = new List<Arac>();
+
+            try
+            {
+                using (var repo = new AracRepository())
+                {
+                    foreach (var entity in repo.SelectAllRezervasyonCar(SirketId))
+                    {
+                        responseEntities.Add(entity);
+                    }
+                }
+                return responseEntities;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:AracBusiness::SelectAllCArac::Error occured.", ex);
+            }
+        }
 
         public AracBusiness()
         {
@@ -143,6 +186,42 @@ namespace RentCarApp.BusinessLogic
         public void Dispose()
         {
             GC.SuppressFinalize(true);
+        }
+
+        public bool UpdateAracMusaitlikDurumu(int id)
+        {
+            try
+            {
+                bool isSuccess;
+                using (var repo = new AracRepository())
+                {
+                    isSuccess = repo.UpdateMusaitlikDurumu(id);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:AracBusiness::UpdateArac::Error occured.", ex);
+            }
+        }
+
+        public bool AracRezervasyonu(int id)
+        {
+            try
+            {
+                bool isSuccess;
+                using (var repo = new AracRepository())
+                {
+                    isSuccess = repo.AracRezervasyonu(id);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:AracBusiness::UpdateArac::Error occured.", ex);
+            }
         }
     }
 }

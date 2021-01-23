@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using RentCarApp.Models.Concretes
+@{ ViewBag.Title = "Sirket Sayfasi";
+    Customers musteri = (Customers)Session["Musteri"];
+    List<Arac> arac = (List<Arac>)Session["Arac"];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,131 +17,81 @@
 </head>
 <body>
     <h2>Araç Listesi</h2>
+    <h2>Hoşgeldin @musteri.Ad</h2>
     <div class="table-responsive">
         <table class="table table-hover m-b-0 c_list">
             <thead>
                 <tr>
-                    <th>
-                        <label class="fancy-checkbox">
-                            <input class="select-all" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </th>
                     <th>Id</th>
                     <th>Ad</th>
                     <th>Model</th>
-                    <th>Yas</th>
                     <th>GunlukKM</th>
                     <th>Airbag</th>
                     <th>BagajHacmi</th>
                     <th>KoltukSayisi</th>
                     <th>Fiyat</th>
                     <th>Sirket</th>
+                    <th>MusaitlikDurumu</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="width: 50px;">
-                        <label class="fancy-checkbox">
-                            <input class="checkbox-tick" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <p class="">25</p>
-                    </td>
-                    <td>
-                        <p class="">Hyundai</p>
-                    </td>
-                    <td>
-                        <p class="">Accent</p>
-                    </td>
-                    <td>
-                        <p class="">4</p>
-                    </td>
-                    <td>
-                        <p class="">100</p>
-                    </td>
-                    <td>
-                        <p class="">true</p>
-                    </td>
-                    <td>
-                        <p class="">100</p>
-                    </td>
-                    <td>
-                        <p class="">5</p>
-                    </td>
-                    <td>
-                        <p class="">120</p>
-                    </td>
-                    <td>
-                        <p class="">myoffice</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 50px;">
-                        <label class="fancy-checkbox">
-                            <input class="checkbox-tick" type="checkbox" name="checkbox">
-                            <span></span>
-                        </label>
-                    </td>
-                    <td>
-                        <p class="">26</p>
-                    </td>
-                    <td>
-                        <p class="">Ford</p>
-                    </td>
-                    <td>
-                        <p class="">Tanus</p>
-                    </td>
-                    <td>
-                        <p class="">15</p>
-                    </td>
-                    <td>
-                        <p class="">100</p>
-                    </td>
-                    <td>
-                        <p class="">false</p>
-                    </td>
-                    <td>
-                        <p class="">120</p>
-                    </td>
-                    <td>
-                        <p class="">5</p>
-                    </td>
-                    <td>
-                        <p class="">80</p>
-                    </td>
-                    <td>
-                        <p class="">myoffice</p>
-                    </td>
-                </tr>
+                @foreach (var a in arac)
+                {
+    <tr>
+        <td>
+            <p class="">@a.Id</p>
+        </td>
+        <td>
+            <p class="">@a.AracAdi</p>
+        </td>
+        <td>
+            <p class="">@a.AracModeli</p>
+        </td>
+        <td>
+            <p class="">@a.GunlukKmSiniri</p>
+        </td>
+        <td>
+            <p class="">@a.AirBag</p>
+        </td>
+        <td>
+            <p class="">@a.BagajHacmi</p>
+        </td>
+        <td>
+            <p class="">@a.KoltukSayisi</p>
+        </td>
+        <td>
+            <p class="">@a.GunlukFiyat</p>
+        </td>
+        <td>
+            <p class="">@a.SirketId</p>
+        </td>
+        <td>
+            <p class="">@a.MusaitlikDurumu</p>
+        </td>
+    </tr>}
             </tbody>
         </table>
     </div>
-    <h2>Başlangıç Tarihi</h2>
-    <div class="container">
-        <select class="bear-dates"></select>
-        <select class="bear-months"></select>
-        <select class="bear-years"></select>
-    </div>
-    <h2>Bitiş Tarihi</h2>
-    <div class="container">
-        <select class="bear-dates"></select>
-        <select class="bear-months"></select>
-        <select class="bear-years"></select>
-    </div>
-    <br />
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" class="btn btn-default" value="Randevu Al" />
+    @using (Html.BeginForm())
+    {
+        <div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Araç Id</label>
+                <div class="col-md-10">
+                    <input type="text" name="aracId" class="form-control" placeholder="Araç Id" />
+                </div>
+                <label class="col-md-2 control-label">Musteri Id</label>
+                <div class="col-md-10">
+                    <input type="text" name="musteriId" class="form-control" placeholder="Musteri Id" value="@musteri.Id" disabled />
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" class="btn btn-default" value="Randevu Al" />
+                </div>
+            </div>
         </div>
-    </div>
-    <script src="@Url.Content("~/Content/JS/calender.js")" type="text/javascript"></script>
-    <script type="text/javascript">
-        dates('option');
-        months('option');
-        years('option', @DateTime.Now.Year, 2022);
-    </script>
+    }
 </body>
 </html>

@@ -83,23 +83,23 @@ namespace RentCarApp.BusinessLogic
             }
         }
 
-        public bool CustomerLogin (string kullaniciAdi, string sifre)
+        public Customers CustomerLogin (string kullaniciAdi, string sifre)
         {
             try
             {
-                bool isSucces;
+                Customers musteri = null;
                 using (var repo = new MusteriRepository())
                 {
-                    isSucces = repo.Login(kullaniciAdi,sifre);
-                    if (isSucces != true)
-                        throw new NullReferenceException("Customer doesnt exists!");
+                    musteri = repo.Login(kullaniciAdi, sifre);
+                    if (musteri == null)
+                        throw new NullReferenceException("Sirket doesnt exists!");
                 }
-                return isSucces;
+                return musteri;
             }
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:CustomerBusiness::SelectCustomerById::Error occured.", ex);
+                throw new Exception("BusinessLogic:CustomerBusiness::CustomerLogin::Error occured.", ex);
             }
         }
 
